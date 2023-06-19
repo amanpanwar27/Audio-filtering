@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Filtering Website</title>
+    
+    <script src="https://unpkg.com/wavesurfer.js">
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #upload-form {
+            margin: 20px auto;
+            width: 300px;
+            text-align: center;
+        }
+
+        #output-audio {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Filtering Website</h1>
+    <div id="upload-form">
+        <label for="audio-upload">Select an audio file:</label>
+        <input type="file" id="audio-upload" accept="audio/*">
+        <button onclick="processAudio()">Process</button>
+    </div>
+
+    <div id="output-audio">
+        <h2>Filtered Audio</h2>
+        <audio id="audio-player" controls></audio>
+    </div>
+    <button onclick="playstop()">play/pause</button>
+</body>
+<script>
+     const wavesurfer = WaveSurfer.create({
+                        container: document.body,
+                        waveColor: 'rgb(200, 0, 200)',
+                        progressColor: 'rgb(100, 0, 100)',
+                    })
+    function processAudio (){
+            var fileInput = document.getElementById("audio-upload");
+            var file = fileInput.files[0];
+
+            var formData = new FormData();
+            formData.append("audio", file);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/process-audio", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // var audioPlayer = document.getElementById("audio-player");
+                    console.log(xhr.response);
+                    let url =  URL.createObjectURL(xhr.response);
+                    // audioPlayer.load();
+                    wavesurfer.load(url);
+                }
+            };
+            xhr.responseType = "blob";
+            xhr.send(formData);
+        }
+        function playstop () {
+        if (wavesurfer.isPlaying()){  
+        wavesurfer.setCurrentTime(0)
+        wavesurfer.pause();
+        }
+        else{
+        wavesurfer.play();
+        }
+};
+
+</script>
+</html> 
