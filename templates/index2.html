@@ -163,6 +163,10 @@ body {
 			<span class="material-icons remove-file-icon">delete</span>
 			<div class="progress-bar"> </div>
 		</div>
+        <select onchange="selectanimal()" id="animal">
+            <option value=1>Dog</option>
+            <option value=0>Cow</option>
+        </select>
 		<button type="button" class="upload-button" onclick="processAudio()"> Process </button>
 	</div>
 </form>
@@ -173,6 +177,10 @@ body {
 </body>
 <script>
     const waveformContainer = document.getElementById("waveform-container");
+    let animal = 0;
+    const selectanimal = ()=>{
+        console.log(document.getElementById("animal").value);
+    }
     const wavesurfer = WaveSurfer.create({
                         container: waveformContainer,
                         waveColor: 'red',
@@ -185,7 +193,7 @@ body {
             var formData = new FormData();
             formData.append("audio", file);
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/process-audio", true);
+            xhr.open("POST", `/process-audio?value=${animal}` , true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     // var audioPlayer = document.getElementById("audio-player");

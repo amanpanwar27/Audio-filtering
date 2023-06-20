@@ -32,8 +32,8 @@
         <label for="audio-upload">Select an audio file:</label>
         <input type="file" id="audio-upload" accept="audio/*">
         <button onclick="processAudio()">Process</button>
+        
     </div>
-
     <div id="output-audio">
         <h2>Filtered Audio</h2>
         <audio id="audio-player" controls></audio>
@@ -41,6 +41,7 @@
     <button onclick="playstop()">play/pause</button>
 </body>
 <script>
+   
      const wavesurfer = WaveSurfer.create({
                         container: document.body,
                         waveColor: 'rgb(200, 0, 200)',

@@ -13,7 +13,6 @@ def index():
 def process_audio():
     # Access the uploaded audio file from the request
     audio_file = request.files['audio']
-
     # Save the audio file locally
     audio_path = 'uploaded_audio.wav'
     audio_file.save(audio_path)
@@ -25,6 +24,14 @@ def process_audio():
     fmin1 = 35  # minimum frequency for range 1
     fmax1 = 95  # maximum frequency for range 1
 
+    args = request.args
+    animal = args.get("value")
+    if(animal == 0):
+        fmin1 = 35  # minimum frequency for range 1
+        fmax1 = 95  # maximum frequency for range 1
+    else :
+        fmin1 = 60
+        fmax1 = 160
     # Get spectrogram of audio signal
     D = np.abs(librosa.stft(y))
 
